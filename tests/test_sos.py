@@ -57,3 +57,13 @@ def test_sos_requires_contacts():
     except ValueError:
         return
     raise AssertionError("empty contact list should raise ValueError")
+
+
+def test_sos_rejects_bad_ack_chance():
+    city = GridCity(size=5, seed=3)
+    for bad in (-0.1, 1.5):
+        try:
+            trigger_sos(city, (0, 0), ack_chance=bad, wait_seconds=0)
+        except ValueError:
+            continue
+        raise AssertionError(f"ack_chance={bad} should raise ValueError")

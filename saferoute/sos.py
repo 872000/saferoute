@@ -33,6 +33,8 @@ def trigger_sos(city: GridCity, location, contacts=None, seed: int = 7,
     contacts = list(contacts) if contacts is not None else list(DEFAULT_CONTACTS)
     if not contacts:
         raise ValueError("need at least one emergency contact")
+    if not 0.0 <= ack_chance <= 1.0:
+        raise ValueError("ack_chance must be in [0, 1]")
     rng = random.Random(seed)
 
     label = city.label(location)
