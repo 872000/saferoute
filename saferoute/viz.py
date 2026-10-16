@@ -18,6 +18,8 @@ SAFETY_CMAP = LinearSegmentedColormap.from_list(
 
 
 def _draw_paths(ax, paths: dict, city: GridCity):
+    if not paths:
+        raise ValueError("need at least one path to draw on the map")
     styles = {
         "safest": {"color": "#1a9850", "lw": 3.0, "ls": "-", "label": "safest route (α=0)"},
         "shortest": {"color": "#2166ac", "lw": 3.0, "ls": "--", "label": "shortest route (α=1)"},
@@ -46,7 +48,8 @@ def plot_route_map(city: GridCity, paths: dict, out_path: str,
     """Save a PNG: safety heatmap of the city with route(s) drawn on top.
 
     ``paths`` maps a name ('safest', 'shortest', 'balanced', or a custom
-    'route') to a list of (r, c) nodes.
+    'route') to a list of (r, c) nodes. Raises ValueError when no paths
+    are given.
     """
     fig, ax = plt.subplots(figsize=(9, 9))
     im = ax.imshow(city.safety, cmap=SAFETY_CMAP, vmin=0.0, vmax=1.0,
